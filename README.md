@@ -22,17 +22,7 @@ In reCAPTCHA v2, users need to click the button: "I'm not a robot" to prove they
 composer require albertcht/invisible-recaptcha
 ```
 
-## Laravel 5
-
-### Setup
-
-Add ServiceProvider to the providers array in `app/config/app.php`.
-
-```
-AlbertCht\InvisibleReCaptcha\InvisibleReCaptchaServiceProvider::class,
-```
-
-> It also supports package discovery for Laravel 5.5.
+## Laravel
 
 ### Configuration
 Before you set your config, remember to choose `invisible reCAPTCHA` while applying for keys.
@@ -68,7 +58,7 @@ Before you render the captcha, please keep those notices in mind:
 
 ##### Display reCAPTCHA in Your View
 
-```php
+```blade
 {!! app('captcha')->render() !!}
 
 // or you can use this in blade
@@ -77,7 +67,7 @@ Before you render the captcha, please keep those notices in mind:
 
 With custom language support:
 
-```php
+```blade
 {!! app('captcha')->render('en') !!}
 
 // or you can use this in blade
@@ -90,7 +80,7 @@ The `render()` process includes three distinct sections that can be rendered sep
 
 You can render the polyfill (do this somewhere like the head of your HTML:)
 
-```php
+```blade
 {!! app('captcha')->renderPolyfill() !!}
 // Or with blade directive:
 @captchaPolyfill
@@ -98,15 +88,15 @@ You can render the polyfill (do this somewhere like the head of your HTML:)
 
 You can render the HTML using this following, this needs to be INSIDE your `<form>` tag:
 
-```php
+```blade
 {!! app('captcha')->renderCaptchaHTML() !!}
 // Or with blade directive:
 @captchaHTML
 ```
 
-And you can render the neccessary `<script>` tags including the optional language support by using:
+And you can render the necessary `<script>` tags including the optional language support by using:
 
-```php
+```blade
 // The argument is optional.
 {!! app('captcha')->renderFooterJS('en') !!}
 
@@ -114,7 +104,8 @@ And you can render the neccessary `<script>` tags including the optional languag
 @captchaScripts
 // blade directive, with language support:
 @captchaScripts('en')
-
+/// blade directive, with Content Security Policy nonce:
+@captchaScripts('en', 'nonce-ASDFGHJKL')
 ```
 
 ##### Validation
@@ -153,7 +144,7 @@ In controller, use:
 $data['captcha'] = new \AlbertCht\InvisibleReCaptcha\InvisibleReCaptcha(
     $this->config->item('recaptcha.sitekey'),
     $this->config->item('recaptcha.secret'),
-    $this->config->item('recaptcha.options'),
+    $this->config->item('recaptcha.options')
 );
 ```
 
